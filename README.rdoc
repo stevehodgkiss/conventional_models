@@ -1,6 +1,6 @@
-= conventional_model
+= ConventionalModel
 
-Description goes here.
+Generate ActiveRecord models with basic relationships based on conventions.
 
 == Note on Patches/Pull Requests
  
