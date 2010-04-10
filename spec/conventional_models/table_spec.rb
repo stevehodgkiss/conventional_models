@@ -36,17 +36,6 @@ module ConventionalModels
         @table.lines[0].should == "set_primary_key \"ID\""
       end
       
-      it "sets the table name" do
-        @conventions = Conventions.new do
-          table_name do |table|
-            "Test"
-          end
-        end
-        @table = Table.new("Page", @columns)
-        @table.apply_conventions(@conventions)
-        @table.lines[1].should == "set_table_name \"Test\""
-      end
-      
       it "sets the class name" do
         @conventions = Conventions.new do
           class_name do |table|

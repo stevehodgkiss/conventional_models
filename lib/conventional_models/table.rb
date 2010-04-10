@@ -18,8 +18,7 @@ module ConventionalModels
       
       @lines << "set_primary_key \"#{conventions.primary_key_name}\""
       
-      table_name = conventions.table_name.call(name)
-      @lines << "set_table_name \"#{table_name}\""
+      @lines << "set_table_name \"#{@name}\""
       
       @columns.each do |column|
         if conventions.belongs_to_matcher.call(column)

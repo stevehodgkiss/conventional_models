@@ -22,9 +22,6 @@ Feature: Output model code
       require 'conventional_models'
       ConventionalModels.configure do
         primary_key_name "Id"
-        table_name do |table|
-          table
-        end
       end
       puts "ContentItem code:<<\n#{ContentItem.model_code}>>"
       puts "Page code:<<\n#{Page.model_code}>>"

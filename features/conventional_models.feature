@@ -32,11 +32,7 @@ Feature: ConventionalModels
       require 'active_record'
       ActiveRecord::Base.establish_connection(:database => '../test.sqlite', :adapter => 'sqlite3')
       require 'conventional_models'
-      ConventionalModels.configure do
-        table_name do |table|
-          table
-        end
-      end
+      ConventionalModels.configure
       puts "Number of records: #{<model_name>.count}"
       """
     When I run "ruby my_script.rb"
@@ -66,9 +62,6 @@ Feature: ConventionalModels
       require 'conventional_models'
       ConventionalModels.configure do
         primary_key_name "Id"
-        table_name do |table|
-          table
-        end
       end
       page = Page.create :Name => 'test'
       page.content_items.create :Name => 'content1'
