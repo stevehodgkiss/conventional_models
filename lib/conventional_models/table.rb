@@ -13,8 +13,11 @@ module ConventionalModels
     end
     
     def apply_conventions(conventions)
+      @lines << "set_primary_key \"#{conventions.primary_key_name}\""
+      
       table_name = conventions.table_name.call(name)
       @lines << "set_table_name \"#{table_name}\""
+      
       @columns.each do |column|
         if conventions.belongs_to_matcher.call(column)
           @lines << "belongs_to :#{conventions.belongs_to_name.call(column)}"

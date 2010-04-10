@@ -27,17 +27,24 @@ module ConventionalModels
     end
     
     describe "#apply_conventions" do
-      describe "table_name" do
-        it "sets the table name" do
-          @conventions = Conventions.new do
-            table_name do |table|
-              "Test"
-            end
-          end
-          @table = Table.new("Page", @columns)
-          @table.apply_conventions(@conventions)
-          @table.lines.first.should == "set_table_name \"Test\""
+      it "sets the primary key" do
+        @conventions = Conventions.new do
+          primary_key_name "ID"
         end
+        @table = Table.new("Page", @columns)
+        @table.apply_conventions(@conventions)
+        @table.lines[0].should == "set_primary_key \"ID\""
+      end
+      
+      it "sets the table name" do
+        @conventions = Conventions.new do
+          table_name do |table|
+            "Test"
+          end
+        end
+        @table = Table.new("Page", @columns)
+        @table.apply_conventions(@conventions)
+        @table.lines[1].should == "set_table_name \"Test\""
       end
       
       it "sets belongs to columns" do
@@ -45,8 +52,9 @@ module ConventionalModels
         @columns = [Column.new("site_id", nil, "integer")]
         @table = Table.new("Page", @columns)
         @table.apply_conventions(@conventions)
-        @table.lines[1].should == "belongs_to :site"
+        @table.lines[2].should == "belongs_to :site"
       end
+      
     end
     
     describe "#code" do

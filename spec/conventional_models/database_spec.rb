@@ -16,23 +16,27 @@ module ConventionalModels
       Table.stub(:new => @table)
     end
     
-    describe ".new" do
+    describe "#apply_conventions" do
+      before(:each) do
+        @database = Database.new(@connection)
+      end
       it "creates a table with the table name and the column definitions" do
         Table.should_receive(:new).with("Test", @columns).and_return(@table)
-        @database = Database.new(@conventions, @connection)
+        @database.apply_conventions(@conventions)
         @database.tables.first.should == @table
       end
       
       it "applies conventions to each table" do
         @table.should_receive(:apply_conventions).with(@conventions)
-        @database = Database.new(@conventions, @connection)
+        @database.apply_conventions(@conventions)
       end
     end
     
     describe "#code" do
       it "should return the code for each table" do
         @table.should_receive(:code).and_return("test")
-        @database = Database.new(@conventions, @connection)
+        @database = Database.new(@connection)
+        @database.apply_conventions(@conventions)
         @database.code.should == "test"
       end
     end
