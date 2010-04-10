@@ -15,11 +15,11 @@ dependencies:
   rspec: 
     group: 
     - :specs
-    version: ">= 0"
+    version: = 1.3.0
   aruba: 
     group: 
     - :features
-    version: ">= 0"
+    version: = 0.1.7
   jeweler: 
     group: 
     - :development
@@ -27,7 +27,7 @@ dependencies:
   cucumber: 
     group: 
     - :features
-    version: ">= 0"
+    version: = 0.6.4
 specs: 
 - rake: 
     version: 0.8.7
@@ -63,7 +63,7 @@ specs:
     version: 1.3.0
 - sqlite3-ruby: 
     version: 1.2.5
-hash: 6bff2fb9a62cac6cb487d87749b7ff85eb91cbe4
+hash: e54d068ab5b54822142a3392faafd4850696a431
 sources: 
 - Rubygems: 
     uri: http://gemcutter.org

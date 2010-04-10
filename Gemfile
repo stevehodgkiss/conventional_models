@@ -1,12 +1,12 @@
 source :gemcutter
 
 group :features do
-  gem "cucumber"
-  gem "aruba"
+  gem "cucumber", "0.6.4"
+  gem "aruba", "0.1.7"
 end
 
 group :specs do
-  gem "rspec"
+  gem "rspec", "1.3.0"
 end
 
 group :development do
