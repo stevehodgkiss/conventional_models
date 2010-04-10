@@ -15,6 +15,11 @@ module ConventionalModel
     def apply_conventions(conventions)
       table_name = conventions.table_name.call(name)
       @lines << "set_table_name \"#{table_name}\""
+      @columns.each do |column|
+        if conventions.belongs_to_matcher.call(column)
+          @lines << "belongs_to :#{conventions.belongs_to_name.call(column)}"
+        end
+      end
     end
     
     def code

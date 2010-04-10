@@ -1,10 +1,11 @@
 require 'rubygems'
-require 'active_support'
 require 'active_record'
+require 'active_support'
 require 'conventional_model/version'
 require 'conventional_model/conventions'
 require 'conventional_model/database'
 require 'conventional_model/table'
+require 'conventional_model/column'
 
 module ConventionalModel
   def self.configure(&block)

@@ -10,7 +10,7 @@ module ConventionalModel
           
           ConventionalModel.stub(:run_code)
           
-          @connection = mock(::ActiveRecord::ConnectionAdapters::AbstractAdapter)
+          @connection = mock(Column)
           ::ActiveRecord::Base.stub(:connection).and_return(@connection)
           
           @generated_code = mock(String)

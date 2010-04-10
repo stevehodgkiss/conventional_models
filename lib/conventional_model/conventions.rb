@@ -11,8 +11,8 @@ module ConventionalModel
     class Builder
       def initialize(config)
         @config = config
-        belongs_to_matcher {|column| column.end_with? "_id"}
-        belongs_to_name {|column| column.gsub(/_id$/, "")}
+        belongs_to_matcher {|column| column.name.end_with? "_id"}
+        belongs_to_name {|column| column.name.gsub(/_id$/, "")}
         primary_key_name "id"
         table_name {|table_name| table_name}
       end

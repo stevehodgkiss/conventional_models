@@ -6,7 +6,7 @@ module ConventionalModel
       @conventions = mock(Conventions)
       
       @connection = mock(::ActiveRecord::ConnectionAdapters::AbstractAdapter)
-      @columns = [mock(::ActiveRecord::ConnectionAdapters::Column)]
+      @columns = [mock(Column)]
       
       @connection.stub(:tables).and_return(["Test"])
       @connection.should_receive(:columns).with("Test").and_return(@columns)

@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 module ConventionalModel
   describe Table do
     before(:each) do
-      @columns = [mock(::ActiveRecord::ConnectionAdapters::Column)]
+      @columns = [mock(Column, :name => "test")]
     end
     
     describe ".new" do
@@ -27,22 +27,33 @@ module ConventionalModel
     end
     
     describe "#apply_conventions" do
-      it "sets the table name" do
-        @conventions = Conventions.new do
-          table_name do |table|
-            table
+      describe "table_name" do
+        it "sets the table name" do
+          @conventions = Conventions.new do
+            table_name do |table|
+              "Test"
+            end
           end
+          @table = Table.new("Page", @columns)
+          @table.apply_conventions(@conventions)
+          @table.lines.first.should == "set_table_name \"Test\""
         end
+      end
+      
+      it "sets belongs to columns" do
+        @conventions = Conventions.new
+        @columns = [Column.new("site_id", nil, "integer")]
         @table = Table.new("Page", @columns)
         @table.apply_conventions(@conventions)
-        @table.lines.first.should == "set_table_name \"Page\""
+        @table.lines[1].should == "belongs_to :site"
       end
     end
     
     describe "#code" do
       before(:each) do
-        @table = Table.new("pages", [])
+        @table = Table.new("pages", @columns)
       end
+      
       it "returns an empty activerecord class with no columns" do
         @model_code = @table.code
         @model_code.should == %Q{class ::Page < ::ActiveRecord::Base\n\nend}

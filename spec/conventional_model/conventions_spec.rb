@@ -28,10 +28,9 @@ module ConventionalModel
     it "should set belongs to matcher" do
       config = Conventions.new do
         belongs_to_matcher do |column|
-          column.end_with? "_id"
+          true
         end
       end
-      config.belongs_to_matcher.call("test").should be_false
       config.belongs_to_matcher.call("test_id").should be_true
     end
   
@@ -45,9 +44,11 @@ module ConventionalModel
     end
   
     it "should have default settings" do
+      @site_id_column = Column.new("site_id", nil, "integer")
+      
       config = Conventions.new
-      config.belongs_to_name.call("site_id").should == "site"
-      config.belongs_to_matcher.call("site_id").should be_true
+      config.belongs_to_name.call(@site_id_column).should == "site"
+      config.belongs_to_matcher.call(@site_id_column).should be_true
       config.primary_key_name.should == "id"
       config.table_name.call("pages").should == "pages"
     end
