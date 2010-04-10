@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-module ConventionalModel
+module ConventionalModels
   describe Database do
     before(:each) do
       @conventions = mock(Conventions)

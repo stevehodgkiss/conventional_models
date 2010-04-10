@@ -1,4 +1,4 @@
-module ConventionalModel #:nodoc:
+module ConventionalModels #:nodoc:
   module VERSION #:nodoc:
     MAJOR = 0
     MINOR = 0

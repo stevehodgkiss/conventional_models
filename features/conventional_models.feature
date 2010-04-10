@@ -1,4 +1,4 @@
-Feature: ConventionalModel
+Feature: ConventionalModels
   In order play with my database
   As a lazy fuck
   I want conventional ActiveRecord models for my database
@@ -11,8 +11,8 @@ Feature: ConventionalModel
       require 'rubygems'
       require 'active_record'
       ActiveRecord::Base.establish_connection(:database => '../test.sqlite', :adapter => 'sqlite3')
-      require 'conventional_model'
-      ConventionalModel.configure
+      require 'conventional_models'
+      ConventionalModels.configure
       puts "Number of records: #{<model_name>.count}"
       """
     When I run "ruby my_script.rb"
@@ -31,8 +31,8 @@ Feature: ConventionalModel
       require 'rubygems'
       require 'active_record'
       ActiveRecord::Base.establish_connection(:database => '../test.sqlite', :adapter => 'sqlite3')
-      require 'conventional_model'
-      ConventionalModel.configure do
+      require 'conventional_models'
+      ConventionalModels.configure do
         table_name do |table|
           table
         end

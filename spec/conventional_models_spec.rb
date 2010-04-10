@@ -1,14 +1,14 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-module ConventionalModel
-  describe ConventionalModel do
+module ConventionalModels
+  describe ConventionalModels do
     describe ".configure" do
       describe "with no args" do
         before(:each) do
           @conventions = mock(Conventions)
           Conventions.stub(:new => @conventions)
           
-          ConventionalModel.stub(:run_code)
+          ConventionalModels.stub(:run_code)
           
           @connection = mock(Column)
           ::ActiveRecord::Base.stub(:connection).and_return(@connection)
@@ -20,16 +20,16 @@ module ConventionalModel
         
         it "creates a database object with the connection and conventions" do
           Database.should_receive(:new).with(@conventions, @connection).and_return(@database)
-          ConventionalModel.configure
+          ConventionalModels.configure
         end
       
         it "run the generated code" do
-          ConventionalModel.should_receive(:run_code).with(@generated_code)
-          ConventionalModel.configure
+          ConventionalModels.should_receive(:run_code).with(@generated_code)
+          ConventionalModels.configure
         end
         
         it "passes the block to conventions" do
-          ConventionalModel.configure do
+          ConventionalModels.configure do
             
           end
         end
@@ -38,8 +38,8 @@ module ConventionalModel
     
     describe ".run_code" do
       it "evaluates the code (probably using Kernel#eval...)" do
-        ConventionalModel.run_code("1 + 1").should == 2
-        ConventionalModel.run_code("'banana'.reverse").should == "ananab"
+        ConventionalModels.run_code("1 + 1").should == 2
+        ConventionalModels.run_code("'banana'.reverse").should == "ananab"
       end
     end
   end  

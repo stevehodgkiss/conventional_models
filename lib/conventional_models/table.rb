@@ -1,4 +1,4 @@
-module ConventionalModel
+module ConventionalModels
   class Table
     attr_accessor :name, :columns, :lines
     

@@ -1,13 +1,13 @@
 require 'rubygems'
 require 'active_record'
 require 'active_support'
-require 'conventional_model/version'
-require 'conventional_model/conventions'
-require 'conventional_model/database'
-require 'conventional_model/table'
-require 'conventional_model/column'
+require 'conventional_models/version'
+require 'conventional_models/conventions'
+require 'conventional_models/database'
+require 'conventional_models/table'
+require 'conventional_models/column'
 
-module ConventionalModel
+module ConventionalModels
   def self.configure(&block)
     @database = Database.new(Conventions.new(&block), ::ActiveRecord::Base.connection)
     run_code @database.code

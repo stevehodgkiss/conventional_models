@@ -1,4 +1,4 @@
-module ConventionalModel
+module ConventionalModels
   class Conventions
     def initialize(&block)
       builder = Builder.new(self)

@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-module ConventionalModel 
+module ConventionalModels 
   describe Conventions do
     it "should set ignored tables" do
       config = Conventions.new do

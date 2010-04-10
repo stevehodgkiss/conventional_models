@@ -6,11 +6,11 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "conventional_model"
+    gem.name = "conventional_models"
     gem.summary = %Q{TODO: one-line summary of your gem}
     gem.description = %Q{TODO: longer description of your gem}
     gem.email = "steve@hodgkiss.me.uk"
-    gem.homepage = "http://github.com/stevehodgkiss/conventional_model"
+    gem.homepage = "http://github.com/stevehodgkiss/conventional_models"
     gem.authors = ["Steve Hodgkiss"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
     gem.add_development_dependency "cucumber", ">= 0"
@@ -78,7 +78,7 @@ Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "conventional_model #{version}"
+  rdoc.title = "conventional_models #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end

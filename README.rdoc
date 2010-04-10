@@ -1,4 +1,4 @@
-= ConventionalModel
+= ConventionalModels
 
 Generate ActiveRecord models with basic relationships based on conventions.
 

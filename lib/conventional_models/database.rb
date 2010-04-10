@@ -1,4 +1,4 @@
-module ConventionalModel
+module ConventionalModels
   class Database
     attr_accessor :tables
     
