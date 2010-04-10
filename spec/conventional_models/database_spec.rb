@@ -4,6 +4,7 @@ module ConventionalModels
   describe Database do
     before(:each) do
       @conventions = mock(Conventions)
+      @conventions.stub(:ignored_tables).and_return([])
       
       @connection = mock(::ActiveRecord::ConnectionAdapters::AbstractAdapter)
       @columns = [mock(Column)]
@@ -14,6 +15,7 @@ module ConventionalModels
       @table = mock(Table)
       @table.stub(:apply_conventions)
       @table.stub(:belongs_to_names).and_return([])
+      @table.stub(:name).and_return("Test")
       Table.stub(:new => @table)
     end
     
@@ -50,6 +52,14 @@ module ConventionalModels
           @database.tables.first.name.should == "sites"
           @database.tables.first.lines.last.should == "has_many :pages, :class_name => 'Page', :primary_key => 'id', :foreign_key => 'site_id'"
         end
+      end
+      
+      it "ignores tables" do
+        @conventions = Conventions.new do
+          ignore_tables "Test"
+        end
+        @table.should_not_receive(:apply_conventions)
+        @database.apply_conventions(@conventions)
       end
     end
 

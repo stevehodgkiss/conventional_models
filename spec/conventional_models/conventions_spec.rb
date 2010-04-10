@@ -61,6 +61,7 @@ module ConventionalModels
       config.primary_key_name.should == "id"
       config.table_name.call("pages").should == "pages"
       config.class_name.call("pages").should == "Page"
+      config.ignored_tables.should == %w{schema_migrations sqlite_sequence sysdiagrams}
     end
   end
 end

@@ -10,7 +10,7 @@ module ConventionalModels
     end
     
     def apply_conventions(conventions)
-      @connection.tables.each do |table|
+      @connection.tables.select{|table| !conventions.ignored_tables.include? table}.each do |table|
         @tables << Table.new(table, @connection.columns(table))
       end
       
