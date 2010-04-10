@@ -6,7 +6,7 @@ module ConventionalModels
     end
     
     attr_accessor :ignored_tables, :primary_key_name, :class_name,
-                  :table_name, :belongs_to_matcher, :belongs_to_name
+                  :belongs_to_matcher, :belongs_to_name
     
     class Builder
       def initialize(config)
@@ -25,10 +25,6 @@ module ConventionalModels
       
       def primary_key_name(name)
         @config.primary_key_name = name
-      end
-      
-      def table_name(&block)
-        @config.table_name = block
       end
       
       def belongs_to_matcher(&block)

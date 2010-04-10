@@ -16,15 +16,6 @@ module ConventionalModels
       config.primary_key_name.should == "Id"
     end
   
-    it "should set table name" do
-      config = Conventions.new do
-        table_name do |table_name|
-          table_name
-        end
-      end
-      config.table_name.call("test").should == "test"
-    end
-  
     it "should set belongs to matcher" do
       config = Conventions.new do
         belongs_to_matcher do |column|
@@ -59,8 +50,8 @@ module ConventionalModels
       config.belongs_to_name.call(@site_id_column).should == "site"
       config.belongs_to_matcher.call(@site_id_column).should be_true
       config.primary_key_name.should == "id"
-      config.table_name.call("pages").should == "pages"
       config.class_name.call("pages").should == "Page"
+      config.class_name.call("page").should == "Page"
       config.ignored_tables.should == %w{schema_migrations sqlite_sequence sysdiagrams}
     end
   end

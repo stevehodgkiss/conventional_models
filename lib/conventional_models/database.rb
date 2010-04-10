@@ -19,8 +19,7 @@ module ConventionalModels
       @tables.each do |table|
         table.belongs_to_names.each do |belongs_to|
           name = conventions.belongs_to_name.call(belongs_to)
-          table_name = conventions.table_name.call(name)
-          has_many_table = @tables.select{|t| t.name == table_name}.first
+          has_many_table = @tables.select{|t| t.class_name == conventions.class_name.call(name)}.first
           if has_many_table
             has_many_table.lines << "has_many :#{table.name.tableize}, :class_name => '#{table.class_name}', :primary_key => '#{conventions.primary_key_name}', :foreign_key => '#{belongs_to.name}'"
           end
