@@ -12,13 +12,21 @@ module ConventionalModel
       @connection.should_receive(:columns).with("Test").and_return(@columns)
       
       @table = mock(Table)
+      @table.stub(:apply_conventions)
       Table.stub(:new => @table)
     end
     
-    it "creates a table with the table name and the column definitions" do
-      Table.should_receive(:new).with("Test", @columns).and_return(@table)
-      @database = Database.new(@conventions, @connection)
-      @database.tables.first.should == @table
+    describe ".new" do
+      it "creates a table with the table name and the column definitions" do
+        Table.should_receive(:new).with("Test", @columns).and_return(@table)
+        @database = Database.new(@conventions, @connection)
+        @database.tables.first.should == @table
+      end
+      
+      it "applies conventions to each table" do
+        @table.should_receive(:apply_conventions).with(@conventions)
+        @database = Database.new(@conventions, @connection)
+      end
     end
     
     describe "#code" do

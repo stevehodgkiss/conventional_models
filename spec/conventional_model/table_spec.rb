@@ -27,13 +27,31 @@ module ConventionalModel
     end
     
     describe "#apply_conventions" do
-      
+      it "sets the table name" do
+        @conventions = Conventions.new do
+          table_name do |table|
+            table
+          end
+        end
+        @table = Table.new("Page", @columns)
+        @table.apply_conventions(@conventions)
+        @table.lines.first.should == "set_table_name \"Page\""
+      end
     end
     
     describe "#code" do
+      before(:each) do
+        @table = Table.new("pages", [])
+      end
       it "returns an empty activerecord class with no columns" do
-        @model_code = Table.new("pages", []).code
-        @model_code.should == %Q{class ::Page < ::ActiveRecord::Base\nend}
+        @model_code = @table.code
+        @model_code.should == %Q{class ::Page < ::ActiveRecord::Base\n\nend}
+      end
+      
+      it "returns lines in the model definition" do
+        @table.lines << "test"
+        @model_code = @table.code
+        @model_code.split("\n")[1].should == "test"
       end
     end
   end

@@ -27,6 +27,12 @@ module ConventionalModel
           ConventionalModel.should_receive(:run_code).with(@generated_code)
           ConventionalModel.configure
         end
+        
+        it "passes the block to conventions" do
+          ConventionalModel.configure do
+            
+          end
+        end
       end
     end
     

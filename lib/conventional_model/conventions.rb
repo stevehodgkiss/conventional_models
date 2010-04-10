@@ -13,7 +13,8 @@ module ConventionalModel
         @config = config
         belongs_to_matcher {|column| column.end_with? "_id"}
         belongs_to_name {|column| column.gsub(/_id$/, "")}
-        primary_key_name "Id"
+        primary_key_name "id"
+        table_name {|table_name| table_name}
       end
       
       def ignore_tables(*tables)

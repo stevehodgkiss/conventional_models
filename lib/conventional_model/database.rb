@@ -9,6 +9,7 @@ module ConventionalModel
       connection.tables.each do |table|
         @tables << Table.new(table, connection.columns(table))
       end
+      @tables.each{|table| table.apply_conventions(@conventions)}
     end
     
     def code

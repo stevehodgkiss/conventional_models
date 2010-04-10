@@ -8,7 +8,7 @@ require 'conventional_model/table'
 
 module ConventionalModel
   def self.configure(&block)
-    @database = Database.new(Conventions.new, ::ActiveRecord::Base.connection)
+    @database = Database.new(Conventions.new(&block), ::ActiveRecord::Base.connection)
     run_code @database.code
   end
   
