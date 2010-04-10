@@ -49,7 +49,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.6}
-  s.summary = nil
+  s.summary = %q{Generate ActiveRecord models. For lazy people.}
   s.test_files = [
     "spec/conventional_models/conventions_spec.rb",
      "spec/conventional_models/database_spec.rb",
