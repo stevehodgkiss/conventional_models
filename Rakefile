@@ -12,8 +12,9 @@ begin
     gem.email = "steve@hodgkiss.me.uk"
     gem.homepage = "http://github.com/stevehodgkiss/conventional_models"
     gem.authors = ["Steve Hodgkiss"]
-    gem.add_development_dependency "rspec", ">= 1.2.9"
-    gem.add_development_dependency "cucumber", ">= 0"
+    gem.add_development_dependency "rspec", ">= 1.3.0"
+    gem.add_development_dependency "cucumber", ">= 0.6.4"
+    gem.add_development_dependency "aruba", ">= 0.1.7"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
