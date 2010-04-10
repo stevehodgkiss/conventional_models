@@ -57,7 +57,6 @@ Feature: ConventionalModels
       | Id      | INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL |
       | Name    | string                                     |
       | Page_id | integer                                    |
-
     And a file named "my_script.rb" with:
       """
       $:.unshift("../../lib")

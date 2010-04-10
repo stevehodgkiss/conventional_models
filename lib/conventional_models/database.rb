@@ -31,5 +31,14 @@ module ConventionalModels
     def code
       @tables.map{|t| t.code}.join("\n")
     end
+    
+    def code_for(table_name)
+      table = @tables.select{|t| t.name == table_name}.first
+      if table
+        table.code
+      else
+        "#{table_name} not found"
+      end
+    end
   end
 end

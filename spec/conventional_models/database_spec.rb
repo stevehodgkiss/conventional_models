@@ -52,13 +52,28 @@ module ConventionalModels
         end
       end
     end
-    
-    describe "#code" do
-      it "should return the code for each table" do
-        @table.should_receive(:code).and_return("test")
+
+    describe "code outputting" do
+      before(:each) do
+        @table.stub(:name).and_return("Test")
         @database = Database.new(@connection)
         @database.apply_conventions(@conventions)
-        @database.code.should == "test"
+      end
+      describe "#code" do
+        it "should return the code for each table" do
+          @table.should_receive(:code).and_return("test")
+          @database.code.should == "test"
+        end
+      end
+    
+      describe "#code_for" do
+        it "should return the model code for a specific table" do
+          @table.should_receive(:code).and_return("test")
+          @database.code_for("Test").should == "test"
+        end
+        it "should return not found for unknown tables" do
+          @database.code_for("SomeTable").should == "SomeTable not found"
+        end
       end
     end
   end
