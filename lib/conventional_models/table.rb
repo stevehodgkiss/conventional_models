@@ -31,7 +31,7 @@ module ConventionalModels
     end
     
     def code
-      "class ::#{@name.singularize.camelize} < ::ActiveRecord::Base\n#{@lines.join("\n")}\nend"
+      "class ::#{@name.singularize.camelize} < ::ActiveRecord::Base\n#{@lines.map{|l| "  #{l}"}.join("\n")}\nend"
     end
   end
 end

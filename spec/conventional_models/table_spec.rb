@@ -82,7 +82,7 @@ module ConventionalModels
       it "returns lines in the model definition" do
         @table.lines << "test"
         @model_code = @table.code
-        @model_code.split("\n")[1].should == "test"
+        @model_code.split("\n")[1].should == "  test"
       end
     end
   end
