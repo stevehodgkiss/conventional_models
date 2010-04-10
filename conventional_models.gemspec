@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steve Hodgkiss"]
   s.date = %q{2010-04-10}
-  s.description = %q{TODO: longer description of your gem}
+  s.description = %q{Generate ActiveRecord models automatically with basic relationships based on conventions.}
   s.email = %q{steve@hodgkiss.me.uk}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "conventional_models.gemspec",
      "features/conventional_models.feature",
      "features/output_model_code.feature",
      "features/step_definitions/conventional_models_steps.rb",
@@ -48,7 +49,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.6}
-  s.summary = %q{TODO: one-line summary of your gem}
+  s.summary = nil
   s.test_files = [
     "spec/conventional_models/conventions_spec.rb",
      "spec/conventional_models/database_spec.rb",
