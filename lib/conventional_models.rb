@@ -9,7 +9,9 @@ require 'conventional_models/column'
 
 module ConventionalModels
   def self.configure(&block)
-    @database = Database.new(Conventions.new(&block), ::ActiveRecord::Base.connection)
+    @conventions = Conventions.new(&block)
+    @database = Database.new(::ActiveRecord::Base.connection)
+    @database.apply_conventions(@conventions)
     run_code @database.code
   end
   

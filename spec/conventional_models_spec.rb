@@ -15,11 +15,17 @@ module ConventionalModels
           
           @generated_code = mock(String)
           @database = mock(Database, :code => @generated_code)
+          @database.stub(:apply_conventions).with(@conventions)
           Database.stub(:new => @database)
         end
         
         it "creates a database object with the connection and conventions" do
-          Database.should_receive(:new).with(@conventions, @connection).and_return(@database)
+          Database.should_receive(:new).with(@connection).and_return(@database)
+          ConventionalModels.configure
+        end
+        
+        it "called apply_conventions on the database object" do
+          @database.should_receive(:apply_conventions).with(@conventions)
           ConventionalModels.configure
         end
       

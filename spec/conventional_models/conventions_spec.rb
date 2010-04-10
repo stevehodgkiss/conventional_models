@@ -42,6 +42,15 @@ module ConventionalModels
       end
       config.belongs_to_name.call("test").should == "test"
     end
+    
+    it "should set class name" do
+      config = Conventions.new do
+        class_name do |column|
+          "test"
+        end
+      end
+      config.class_name.call("").should == "test"
+    end
   
     it "should have default settings" do
       @site_id_column = Column.new("site_id", nil, "integer")
@@ -51,6 +60,7 @@ module ConventionalModels
       config.belongs_to_matcher.call(@site_id_column).should be_true
       config.primary_key_name.should == "id"
       config.table_name.call("pages").should == "pages"
+      config.class_name.call("pages").should == "Page"
     end
   end
 end

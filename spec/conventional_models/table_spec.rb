@@ -47,12 +47,24 @@ module ConventionalModels
         @table.lines[1].should == "set_table_name \"Test\""
       end
       
-      it "sets belongs to columns" do
-        @conventions = Conventions.new
-        @columns = [Column.new("site_id", nil, "integer")]
+      it "sets the class name" do
+        @conventions = Conventions.new do
+          class_name do |table|
+            "BOO"
+          end
+        end
         @table = Table.new("Page", @columns)
         @table.apply_conventions(@conventions)
-        @table.lines[2].should == "belongs_to :site"
+        @table.class_name.should == "BOO"
+      end
+      
+      it "sets belongs to columns" do
+        @conventions = Conventions.new
+        @columns = [Column.new("Site_id", nil, "integer")]
+        @table = Table.new("Page", @columns)
+        @table.apply_conventions(@conventions)
+        @table.lines[2].should == "belongs_to :site, :class_name => 'Site'"
+        @table.belongs_to_names.first.name.should == "Site_id"
       end
       
     end
