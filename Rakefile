@@ -6,7 +6,7 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "Conventional Models"
+    gem.name = "conventional_models"
     gem.description = %Q{Generate ActiveRecord models automatically with basic relationships based on conventions.}
     gem.summary = %Q{Generate ActiveRecord models. For lazy people.}
     gem.email = "steve@hodgkiss.me.uk"
