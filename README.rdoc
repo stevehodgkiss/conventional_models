@@ -52,6 +52,49 @@ Output:
     ignore_tables "schema_migrations", "sqlite_sequence", "sysdiagrams"
   end
 
+== cmconsole command
+
+Starts an IRB session and configures activerecord for you based on what is in config/database.yml.
+
+=== Usage 
+  cmconsole [options]
+
+  For help use: cmconsole -h
+
+=== Options
+  -h, --help            Displays help message
+  -v, --version         Display the version, then exit
+  -e, --environment     Specify the database env to use, default to development
+  -c, --config          Where database.yml lives
+  -s, --skip-configure  Don't configure ConventionalModels automatically
+  -V, --verbose         Verbose
+
+== Rake
+
+You can use this from rake as follows:
+
+  # Confiigure active_record as you would normally
+  
+  task :console do
+    require 'irb'
+    require 'conventional_models'
+    ConventionalModels.configure do
+      primary_key_name "Id"
+    end
+    puts ConventionalModels.model_code
+    IRB.start
+  end
+  
+
+== Why?
+
+I use this for data migrations or quick scripting tasks on databases that don't follow rails 
+conventions.
+
+== TODO
+
+
+
 == Note on Patches/Pull Requests
  
 * Fork the project.
