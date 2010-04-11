@@ -9,9 +9,11 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steve Hodgkiss"]
-  s.date = %q{2010-04-10}
+  s.date = %q{2010-04-11}
+  s.default_executable = %q{cmconsole}
   s.description = %q{Generate ActiveRecord models automatically with basic relationships based on conventions.}
   s.email = %q{steve@hodgkiss.me.uk}
+  s.executables = ["cmconsole"]
   s.extra_rdoc_files = [
     "LICENSE",
      "README.rdoc"
@@ -25,21 +27,30 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "bin/cmconsole",
      "conventional_models.gemspec",
+     "features/cmconsole.feature",
      "features/conventional_models.feature",
      "features/output_model_code.feature",
+     "features/step_definitions/cmconsole_steps.rb",
      "features/step_definitions/conventional_models_steps.rb",
      "features/step_definitions/output_model_code_steps.rb",
      "features/support/env.rb",
      "lib/conventional_models.rb",
      "lib/conventional_models/active_record_base_model_for.rb",
+     "lib/conventional_models/cli.rb",
      "lib/conventional_models/column.rb",
      "lib/conventional_models/conventions.rb",
      "lib/conventional_models/database.rb",
+     "lib/conventional_models/option_parser.rb",
+     "lib/conventional_models/options.rb",
      "lib/conventional_models/table.rb",
      "lib/conventional_models/version.rb",
+     "spec/conventional_models/cli_spec.rb",
      "spec/conventional_models/conventions_spec.rb",
      "spec/conventional_models/database_spec.rb",
+     "spec/conventional_models/option_parser_spec.rb",
+     "spec/conventional_models/options_spec.rb",
      "spec/conventional_models/table_spec.rb",
      "spec/conventional_models_spec.rb",
      "spec/spec.opts",
@@ -51,8 +62,11 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.6}
   s.summary = %q{Generate ActiveRecord models. For lazy people.}
   s.test_files = [
-    "spec/conventional_models/conventions_spec.rb",
+    "spec/conventional_models/cli_spec.rb",
+     "spec/conventional_models/conventions_spec.rb",
      "spec/conventional_models/database_spec.rb",
+     "spec/conventional_models/option_parser_spec.rb",
+     "spec/conventional_models/options_spec.rb",
      "spec/conventional_models/table_spec.rb",
      "spec/conventional_models_spec.rb",
      "spec/spec_helper.rb"
