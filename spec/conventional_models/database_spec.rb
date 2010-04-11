@@ -29,22 +29,49 @@ module ConventionalModels
       end
       
       describe "has many relationships" do
-        before(:each) do
-          @connection.stub(:tables).and_return(["sites", "pages"])
+        
+        describe "conventional" do
+          before(:each) do
+            @connection.stub(:tables).and_return(["sites", "pages"])
+
+            Table.unstub!(:new)
+            @site_columns = [Column.new("name", nil, "string")]
+            @pages_columns = [Column.new("site_id", nil, "integer")]
+            @connection.stub(:columns).with("sites").and_return(@site_columns)
+            @connection.stub(:columns).with("pages").and_return(@pages_columns)
+            @database = Database.new(Conventions.new)
+          end
+
+          it "sets the table name" do
+            @database.tables.first.name.should == "sites"
+          end
           
-          Table.unstub!(:new)
-          @site_columns = [Column.new("name", nil, "string")]
-          @pages_columns = [Column.new("site_id", nil, "integer")]
+          it "sets site to have many pages" do
+            @database.tables.first.lines.last.should == "has_many :pages"
+            # , :class_name => 'Page', :primary_key => 'id', :foreign_key => 'site_id'
+          end
+        end
+
+        describe "unconventional" do
+          before(:each) do
+            @connection.stub(:tables).and_return(["Site", "Page"])
+            Table.unstub!(:new)
+            @site_columns = [Column.new("Name", nil, "string")]
+            @pages_columns = [Column.new("Site_id", nil, "integer")]
+            @connection.stub(:columns).with("Site").and_return(@site_columns)
+            @connection.stub(:columns).with("Page").and_return(@pages_columns)
+            @database = Database.new(Conventions.new{ primary_key_name "ID" })
+          end
+
+          it "sets the table name" do
+            @database.tables.first.name.should == "Site"
+          end
           
-          @connection.stub(:columns).with("sites").and_return(@site_columns)
-          @connection.stub(:columns).with("pages").and_return(@pages_columns)
+          it "sets site to have many pages" do
+            @database.tables.first.lines.last.should == "has_many :pages, :class_name => 'Page', :foreign_key => 'Site_id', :primary_key => 'ID'"
+          end
         end
         
-        it "sets site to have many pages" do
-          @database = Database.new(Conventions.new)
-          @database.tables.first.name.should == "sites"
-          @database.tables.first.lines.last.should == "has_many :pages, :class_name => 'Page', :primary_key => 'id', :foreign_key => 'site_id'"
-        end
       end
       
       it "ignores tables" do

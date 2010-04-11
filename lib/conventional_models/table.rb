@@ -20,14 +20,18 @@ module ConventionalModels
       "class ::#{@name.singularize.camelize} < ::ActiveRecord::Base\n#{@lines.map{|l| "  #{l}"}.join("\n")}\nend"
     end
     
+    def conventional_name?
+      @name.tableize == @name
+    end
+    
     protected
     
       def apply_conventions
         @class_name = @conventions.class_name.call(@name)
       
-        @lines << "set_primary_key \"#{@conventions.primary_key_name}\""
+        @lines << "set_primary_key \"#{@conventions.primary_key_name}\"" unless @conventions.primary_key_name == "id"
       
-        @lines << "set_table_name \"#{@name}\""
+        @lines << "set_table_name \"#{@name}\"" unless @name.tableize == @name
       
         @columns.each do |column|
           if @conventions.belongs_to_matcher.call(column)

@@ -7,6 +7,14 @@ module ConventionalModels
       @conventions = Conventions.new
     end
     
+    def has_item?(array, expected)
+      @found = false
+      array.each do |line|
+        @found = true if line == expected
+      end
+      @found
+    end
+    
     describe ".new" do
       it "sets the name" do
         Table.new("test", @columns, @conventions).name.should == "test"
@@ -27,13 +35,35 @@ module ConventionalModels
       end
     end
     
-    describe "#apply_conventions" do
+    describe "#conventional_name?" do
+      it "is true for tables that have a name that matches rails conventions" do
+        Table.new("Page", @columns, @conventions).conventional_name?.should be_false
+        Table.new("pages", @columns, @conventions).conventional_name?.should be_true
+      end
+    end
+    
+    describe ".new" do
       it "sets the primary key" do
         @conventions = Conventions.new do
           primary_key_name "ID"
         end
         @table = Table.new("Page", @columns, @conventions)
-        @table.lines[0].should == "set_primary_key \"ID\""
+        has_item?(@table.lines, "set_primary_key \"ID\"").should be_true
+      end
+      
+      it "doesn't set the primary key when it is the rails default" do
+        @table = Table.new("Page", @columns, @conventions)
+        has_item?(@table.lines, "set_primary_key \"id\"").should_not == be_true
+      end
+      
+      it "sets the table name" do
+        @table = Table.new("Page", @columns, @conventions)
+        has_item?(@table.lines, "set_table_name \"Page\"").should be_true
+      end
+      
+      it "doesn't set the table name if it is the rails default" do
+        @table = Table.new("pages", @columns, @conventions)
+        has_item?(@table.lines, "set_table_name \"pages\"").should be_false
       end
       
       it "sets the class name" do
@@ -50,7 +80,7 @@ module ConventionalModels
         @conventions = Conventions.new
         @columns = [Column.new("Site_id", nil, "integer")]
         @table = Table.new("Page", @columns, @conventions)
-        @table.lines[2].should == "belongs_to :site, :class_name => 'Site'"
+        has_item?(@table.lines, "belongs_to :site, :class_name => 'Site'").should be_true
         @table.belongs_to_names.first.name.should == "Site_id"
       end
       
@@ -69,7 +99,7 @@ module ConventionalModels
       it "returns lines in the model definition" do
         @table.lines << "test"
         @model_code = @table.code
-        @model_code.split("\n")[3].should == "  test"
+        has_item?(@model_code.split("\n"), "  test").should be_true
       end
     end
   end

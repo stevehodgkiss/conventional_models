@@ -35,7 +35,18 @@ module ConventionalModels
             name = @conventions.belongs_to_name.call(belongs_to)
             has_many_table = @tables.select{|t| t.class_name == @conventions.class_name.call(name)}.first
             if has_many_table
-              has_many_table.lines << "has_many :#{table.name.tableize}, :class_name => '#{table.class_name}', :primary_key => '#{@conventions.primary_key_name}', :foreign_key => '#{belongs_to.name}'"
+              unconventions = []
+              unless table.conventional_name?
+                unconventions << ":class_name => '#{table.class_name}'"
+                unconventions << ":foreign_key => '#{belongs_to.name}'"
+              end
+              unless @conventions.primary_key_name == "id"
+                unconventions << ":primary_key => '#{@conventions.primary_key_name}'"
+              end
+              
+              has_many_table.lines << ["has_many :#{table.name.tableize}", "#{unconventions.join(", ")}"].select do |convention|
+                !convention.empty?
+              end.join(", ")
             end
           end
         end
