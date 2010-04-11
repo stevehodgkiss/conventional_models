@@ -2,7 +2,7 @@ require 'rubygems'
 require 'active_record'
 require 'active_support'
 require 'conventional_models/version'
-require 'conventional_models/conventions'
+require 'conventional_models/config'
 require 'conventional_models/database'
 require 'conventional_models/table'
 require 'conventional_models/column'
@@ -17,11 +17,11 @@ module ConventionalModels
   @@database = nil
   
   def self.configure(&block)
-    @@conventions = Conventions.new(&block)
+    @@config = Config.new(&block)
     unless @@database.nil?
       remove(@@database)
     end
-    @@database = Database.new(@@conventions)
+    @@database = Database.new(@@config)
     run_code @@database.code
   end
   

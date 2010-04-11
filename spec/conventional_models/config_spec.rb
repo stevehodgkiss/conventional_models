@@ -1,23 +1,23 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 module ConventionalModels 
-  describe Conventions do
+  describe Config do
     it "should set ignored tables" do
-      config = Conventions.new do
+      config = Config.new do
         ignore_tables "slc", "abc"
       end
       config.ignored_tables.should == ["slc", "abc"]
     end
   
     it "should set primary key name" do
-      config = Conventions.new do
+      config = Config.new do
         primary_key_name "Id"
       end
       config.primary_key_name.should == "Id"
     end
   
     it "should set belongs to matcher" do
-      config = Conventions.new do
+      config = Config.new do
         belongs_to_matcher do |column|
           true
         end
@@ -26,7 +26,7 @@ module ConventionalModels
     end
   
     it "should set belongs to name" do
-      config = Conventions.new do
+      config = Config.new do
         belongs_to_name do |column|
           column
         end
@@ -35,7 +35,7 @@ module ConventionalModels
     end
     
     it "should set class name" do
-      config = Conventions.new do
+      config = Config.new do
         class_name do |column|
           "test"
         end
@@ -46,7 +46,7 @@ module ConventionalModels
     it "should have default settings" do
       @site_id_column = Column.new("site_id", nil, "integer")
       
-      config = Conventions.new
+      config = Config.new
       config.belongs_to_name.call(@site_id_column).should == "site"
       config.belongs_to_matcher.call(@site_id_column).should be_true
       config.primary_key_name.should == "id"

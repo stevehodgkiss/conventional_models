@@ -3,8 +3,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 module ConventionalModels
   describe Database do
     before(:each) do
-      @conventions = mock(Conventions)
-      @conventions.stub(:ignored_tables).and_return([])
+      @config = mock(Config)
+      @config.stub(:ignored_tables).and_return([])
       
       @connection = mock(::ActiveRecord::ConnectionAdapters::AbstractAdapter)
       @columns = [mock(Column)]
@@ -22,9 +22,9 @@ module ConventionalModels
     end
     
     describe ".new" do
-      it "creates a table with the table name, column definitions and conventions" do
-        Table.should_receive(:new).with("Test", @columns, @conventions).and_return(@table)
-        @database = Database.new(@conventions)
+      it "creates a table with the table name, column definitions and config" do
+        Table.should_receive(:new).with("Test", @columns, @config).and_return(@table)
+        @database = Database.new(@config)
         @database.tables.first.should == @table
       end
       
@@ -39,7 +39,7 @@ module ConventionalModels
             @pages_columns = [Column.new("site_id", nil, "integer")]
             @connection.stub(:columns).with("sites").and_return(@site_columns)
             @connection.stub(:columns).with("pages").and_return(@pages_columns)
-            @database = Database.new(Conventions.new)
+            @database = Database.new(Config.new)
           end
 
           it "sets the table name" do
@@ -60,7 +60,7 @@ module ConventionalModels
             @pages_columns = [Column.new("Site_id", nil, "integer")]
             @connection.stub(:columns).with("Site").and_return(@site_columns)
             @connection.stub(:columns).with("Page").and_return(@pages_columns)
-            @database = Database.new(Conventions.new{ primary_key_name "ID" })
+            @database = Database.new(Config.new{ primary_key_name "ID" })
           end
 
           it "sets the table name" do
@@ -75,11 +75,11 @@ module ConventionalModels
       end
       
       it "ignores tables" do
-        @conventions = Conventions.new do
+        @config = Config.new do
           ignore_tables "Test"
         end
         @table.should_not_receive(:apply_conventions)
-        @database = Database.new(@conventions)
+        @database = Database.new(@config)
       end
     end
 
@@ -90,7 +90,7 @@ module ConventionalModels
       describe "#code" do
         it "should return the code for each table" do
           @table.should_receive(:code).and_return("test")
-          @database = Database.new(@conventions)
+          @database = Database.new(@config)
           @database.code.should == "test"
         end
       end
@@ -98,11 +98,11 @@ module ConventionalModels
       describe "#code_for" do
         it "should return the model code for a specific table" do
           @table.should_receive(:code).and_return("test")
-          @database = Database.new(@conventions)
+          @database = Database.new(@config)
           @database.code_for("Test").should == "test"
         end
         it "should return not found for unknown tables" do
-        @database = Database.new(@conventions)
+        @database = Database.new(@config)
           @database.code_for("SomeTable").should == "SomeTable not found"
         end
       end

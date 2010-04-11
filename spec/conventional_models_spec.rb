@@ -3,14 +3,14 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 module ConventionalModels
   describe ConventionalModels do
     before(:each) do
-      @conventions = mock(Conventions)
-      Conventions.stub(:new => @conventions)
+      @config = mock(Config)
+      Config.stub(:new => @config)
       
       ConventionalModels.stub(:run_code)
       
       @generated_code = mock(String)
       @database = mock(Database, :code => @generated_code)
-      @database.stub(:apply_conventions).with(@conventions)
+      @database.stub(:apply_conventions)
       Database.stub(:new => @database)
 
       ConventionalModels.stub(:remove)
@@ -19,7 +19,7 @@ module ConventionalModels
     describe ".configure" do
       describe "with no args" do
         it "creates a database object with the conventions" do
-          Database.should_receive(:new).with(@conventions).and_return(@database)
+          Database.should_receive(:new).with(@config).and_return(@database)
           ConventionalModels.configure
         end
       

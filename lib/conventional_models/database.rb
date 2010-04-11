@@ -4,9 +4,9 @@ module ConventionalModels
   class Database
     attr_accessor :tables
     
-    def initialize(conventions)
+    def initialize(config)
       @connection = ::ActiveRecord::Base.connection
-      @conventions = conventions
+      @config = config
       @tables = []
       apply_conventions
     end
@@ -26,22 +26,22 @@ module ConventionalModels
     
     protected
       def apply_conventions
-        @connection.tables.select{|table| !@conventions.ignored_tables.include? table}.each do |table|
-          @tables << Table.new(table, @connection.columns(table), @conventions)
+        @connection.tables.select{|table| !@config.ignored_tables.include? table}.each do |table|
+          @tables << Table.new(table, @connection.columns(table), @config)
         end
 
         @tables.each do |table|
           table.belongs_to_names.each do |belongs_to|
-            name = @conventions.belongs_to_name.call(belongs_to)
-            has_many_table = @tables.select{|t| t.class_name == @conventions.class_name.call(name)}.first
+            name = @config.belongs_to_name.call(belongs_to)
+            has_many_table = @tables.select{|t| t.class_name == @config.class_name.call(name)}.first
             if has_many_table
               unconventions = []
               unless table.conventional_name?
                 unconventions << ":class_name => '#{table.class_name}'"
                 unconventions << ":foreign_key => '#{belongs_to.name}'"
               end
-              unless @conventions.primary_key_name == "id"
-                unconventions << ":primary_key => '#{@conventions.primary_key_name}'"
+              unless @config.primary_key_name == "id"
+                unconventions << ":primary_key => '#{@config.primary_key_name}'"
               end
               
               has_many_table.lines << ["has_many :#{table.name.tableize}", "#{unconventions.join(", ")}"].select do |convention|

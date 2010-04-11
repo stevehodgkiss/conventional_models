@@ -1,5 +1,5 @@
 module ConventionalModels
-  class Conventions
+  class Config
     def initialize(&block)
       builder = Builder.new(self)
       builder.instance_eval(&block) if block
