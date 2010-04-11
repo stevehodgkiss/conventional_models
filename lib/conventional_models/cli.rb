@@ -29,6 +29,7 @@ module ConventionalModels
       def run_console
         ConventionalModels.configure_active_record(@options.config, @options.environment)
         ConventionalModels.configure unless @options.skip_configure
+        puts ConventionalModels.model_code
         IRB.start
       end
       

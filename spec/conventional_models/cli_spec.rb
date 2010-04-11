@@ -32,6 +32,7 @@ module ConventionalModels
         before(:each) do
           @option_parser.stub(:parsed_options?).and_return(true)
           ConventionalModels.stub(:configure)
+          ConventionalModels.stub(:model_code)
           ConventionalModels.stub(:configure_active_record)
           IRB.stub(:start)
         end
@@ -44,6 +45,12 @@ module ConventionalModels
         it "calls configure" do
           ConventionalModels.should_receive(:configure)
           run
+        end
+        
+        it "puts the model code" do
+          ConventionalModels.should_receive(:model_code).and_return("TEST")
+          run
+          $stdout.string.should == "TEST\n"
         end
         
         it "start IRB" do
