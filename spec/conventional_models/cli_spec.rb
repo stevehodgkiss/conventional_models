@@ -7,6 +7,7 @@ module ConventionalModels
       @options = Options.new
       @option_parser = mock(OptionParser, :options => @options)
       OptionParser.stub(:new).and_return(@option_parser)
+      File.stub(:exists?).with(@options.config).and_return(true)
     end
     
     it "should create a new option parser with args" do
@@ -40,6 +41,22 @@ module ConventionalModels
         it "configures activerecord with config and environment options" do
           ConventionalModels.should_receive(:configure_active_record).with(@options.config, @options.environment)
           run
+        end
+        
+        describe "when config doesnt exist" do
+          before(:each) do
+            File.stub(:exists?).with(@options.config).and_return(false)
+          end
+          
+          it "complains" do
+            run
+            $stdout.string.should include("doesn't exist")
+          end
+          
+          it "does not call configure_active_record" do
+            run
+            ConventionalModels.should_not_receive(:configure_active_record)
+          end
         end
         
         it "calls configure" do
@@ -80,7 +97,7 @@ module ConventionalModels
             @options.output_version = true
             ConventionalModels.should_not_receive(:configure_active_record)
             run
-            $stdout.string.should =~ /#{VERSION}/
+            $stdout.string.should =~ /#{VERSION::STRING}/
           end
         end
       end

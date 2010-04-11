@@ -27,6 +27,10 @@ module ConventionalModels
     protected
       
       def run_console
+        unless File.exists?(@options.config)
+          puts "Config #{@options.config} doesn't exist!"
+          return
+        end
         ConventionalModels.configure_active_record(@options.config, @options.environment)
         ConventionalModels.configure unless @options.skip_configure
         puts ConventionalModels.model_code
@@ -51,7 +55,7 @@ module ConventionalModels
       end
     
       def output_version
-        puts "ConventionalModels version #{ConventionalModels::VERSION}"
+        puts "ConventionalModels version #{ConventionalModels::VERSION::STRING}"
       end
   end
 end
