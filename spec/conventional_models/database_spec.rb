@@ -9,6 +9,8 @@ module ConventionalModels
       @connection = mock(::ActiveRecord::ConnectionAdapters::AbstractAdapter)
       @columns = [mock(Column)]
       
+      ::ActiveRecord::Base.stub(:connection).and_return(@connection)
+      
       @connection.stub(:tables).and_return(["Test"])
       @connection.stub(:columns).with("Test").and_return(@columns)
       
@@ -19,20 +21,11 @@ module ConventionalModels
       Table.stub(:new => @table)
     end
     
-    describe "#apply_conventions" do
-      before(:each) do
-        @database = Database.new(@connection)
-      end
-      
-      it "creates a table with the table name and the column definitions" do
-        Table.should_receive(:new).with("Test", @columns).and_return(@table)
-        @database.apply_conventions(@conventions)
+    describe ".new" do
+      it "creates a table with the table name, column definitions and conventions" do
+        Table.should_receive(:new).with("Test", @columns, @conventions).and_return(@table)
+        @database = Database.new(@conventions)
         @database.tables.first.should == @table
-      end
-      
-      it "applies conventions to each table" do
-        @table.should_receive(:apply_conventions).with(@conventions)
-        @database.apply_conventions(@conventions)
       end
       
       describe "has many relationships" do
@@ -48,7 +41,7 @@ module ConventionalModels
         end
         
         it "sets site to have many pages" do
-          @database.apply_conventions(Conventions.new)
+          @database = Database.new(Conventions.new)
           @database.tables.first.name.should == "sites"
           @database.tables.first.lines.last.should == "has_many :pages, :class_name => 'Page', :primary_key => 'id', :foreign_key => 'site_id'"
         end
@@ -59,19 +52,18 @@ module ConventionalModels
           ignore_tables "Test"
         end
         @table.should_not_receive(:apply_conventions)
-        @database.apply_conventions(@conventions)
+        @database = Database.new(@conventions)
       end
     end
 
     describe "code outputting" do
       before(:each) do
         @table.stub(:name).and_return("Test")
-        @database = Database.new(@connection)
-        @database.apply_conventions(@conventions)
       end
       describe "#code" do
         it "should return the code for each table" do
           @table.should_receive(:code).and_return("test")
+          @database = Database.new(@conventions)
           @database.code.should == "test"
         end
       end
@@ -79,9 +71,11 @@ module ConventionalModels
       describe "#code_for" do
         it "should return the model code for a specific table" do
           @table.should_receive(:code).and_return("test")
+          @database = Database.new(@conventions)
           @database.code_for("Test").should == "test"
         end
         it "should return not found for unknown tables" do
+        @database = Database.new(@conventions)
           @database.code_for("SomeTable").should == "SomeTable not found"
         end
       end

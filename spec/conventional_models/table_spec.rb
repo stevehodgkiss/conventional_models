@@ -4,25 +4,26 @@ module ConventionalModels
   describe Table do
     before(:each) do
       @columns = [mock(Column, :name => "test")]
+      @conventions = Conventions.new
     end
     
     describe ".new" do
       it "sets the name" do
-        Table.new("test", @columns).name.should == "test"
+        Table.new("test", @columns, @conventions).name.should == "test"
       end
       
       it "sets the columns" do
-        Table.new("test", @columns).columns.should == @columns
+        Table.new("test", @columns, @conventions).columns.should == @columns
       end
     end
     
     describe "#==" do
       it "is true for tables with the same name" do
-        Table.new("Page", @columns).should == Table.new("Page", @columns)
+        Table.new("Page", @columns, @conventions).should == Table.new("Page", @columns, @conventions)
       end
       
       it "is false for tables with different names" do
-        Table.new("Page", @columns).should_not == Table.new("Bar", @columns)
+        Table.new("Page", @columns, @conventions).should_not == Table.new("Bar", @columns, @conventions)
       end
     end
     
@@ -31,8 +32,7 @@ module ConventionalModels
         @conventions = Conventions.new do
           primary_key_name "ID"
         end
-        @table = Table.new("Page", @columns)
-        @table.apply_conventions(@conventions)
+        @table = Table.new("Page", @columns, @conventions)
         @table.lines[0].should == "set_primary_key \"ID\""
       end
       
@@ -42,16 +42,14 @@ module ConventionalModels
             "BOO"
           end
         end
-        @table = Table.new("Page", @columns)
-        @table.apply_conventions(@conventions)
+        @table = Table.new("Page", @columns, @conventions)
         @table.class_name.should == "BOO"
       end
       
       it "sets belongs to columns" do
         @conventions = Conventions.new
         @columns = [Column.new("Site_id", nil, "integer")]
-        @table = Table.new("Page", @columns)
-        @table.apply_conventions(@conventions)
+        @table = Table.new("Page", @columns, @conventions)
         @table.lines[2].should == "belongs_to :site, :class_name => 'Site'"
         @table.belongs_to_names.first.name.should == "Site_id"
       end
@@ -60,18 +58,18 @@ module ConventionalModels
     
     describe "#code" do
       before(:each) do
-        @table = Table.new("pages", @columns)
+        @table = Table.new("pages", @columns, @conventions)
       end
       
-      it "returns an empty activerecord class with no columns" do
+      it "returns an activerecord class" do
         @model_code = @table.code
-        @model_code.should == %Q{class ::Page < ::ActiveRecord::Base\n\nend}
+        @model_code.starts_with?(%Q{class ::Page < ::ActiveRecord::Base}).should be_true
       end
       
       it "returns lines in the model definition" do
         @table.lines << "test"
         @model_code = @table.code
-        @model_code.split("\n")[1].should == "  test"
+        @model_code.split("\n")[3].should == "  test"
       end
     end
   end

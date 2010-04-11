@@ -18,7 +18,7 @@ Feature: Output model code
       $:.unshift("../../lib")
       require 'rubygems'
       require 'active_record'
-      ActiveRecord::Base.establish_connection(:database => '../test.sqlite', :adapter => 'sqlite3')
+      ActiveRecord::Base.establish_connection(:database => 'test.sqlite', :adapter => 'sqlite3')
       require 'conventional_models'
       ConventionalModels.configure do
         primary_key_name "Id"

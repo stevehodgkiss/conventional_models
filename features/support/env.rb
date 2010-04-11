@@ -8,15 +8,16 @@ require 'active_record'
 
 Before do
   config = {
-    :development => {
-      :database => 'tmp/test.sqlite',
-      :adapter => 'sqlite3'
+    "development" => {
+      "database" => 'tmp/aruba/test.sqlite',
+      "adapter" => 'sqlite3'
     }
   }
   
   ActiveRecord::Base.configurations = config
   
   system "mkdir -p tmp"
-  system 'rm -f tmp/test.sqlite'
-  ActiveRecord::Base.establish_connection(config[:development])
+  system "mkdir -p tmp/aruba"
+  system 'rm -f tmp/aruba/test.sqlite'
+  ActiveRecord::Base.establish_connection(config["development"])
 end

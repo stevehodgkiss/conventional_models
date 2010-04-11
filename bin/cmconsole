@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby
+
+# == Synopsis 
+#   cmconsole starts an IRB session and configures activerecord for you 
+#   based on what is in config/database.yml.
+#
+# == Examples
+#   Default options when you run cmconsosole are:
+#     cmconsole --config config/database.yml -e development
+#
+#   Other examples:
+#     cmconsole --skip-configure
+#
+# == Usage 
+#   cmconsole [options]
+#
+#   For help use: cmconsole -h
+#
+# == Options
+#   -h, --help            Displays help message
+#   -v, --version         Display the version, then exit
+#   -e, --environment     Specify the database env to use
+#   -c, --config          Where database.yml lives
+#   -s, --skip-configure  Don't configure ConventionalModels automatically
+#   -V, --verbose         Verbose
+#
+# == Author
+#   Steve Hodgkiss
+#
+# == Copyright
+#   Copyright (c) 2007 Steve Hodgkiss. Licensed under the MIT License:
+#   http://www.opensource.org/licenses/mit-license.php
+
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+begin
+  require 'conventional_models'
+rescue LoadError
+  if File.symlink? __FILE__
+    require File.dirname(File.readlink(__FILE__)) + '/../lib/conventional_models'
+  else
+    require File.dirname(__FILE__) + '/../lib/conventional_models'
+  end
+end
+cli = ConventionalModels::CLI.new(ARGV)
+cli.run

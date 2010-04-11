@@ -8,29 +8,30 @@ module ConventionalModels
       
       ConventionalModels.stub(:run_code)
       
-      @connection = mock(Column)
-      ::ActiveRecord::Base.stub(:connection).and_return(@connection)
-      
       @generated_code = mock(String)
       @database = mock(Database, :code => @generated_code)
       @database.stub(:apply_conventions).with(@conventions)
       Database.stub(:new => @database)
+
+      ConventionalModels.stub(:remove)
     end
     
     describe ".configure" do
-      describe "with no args" do        
-        it "creates a database object with the connection and conventions" do
-          Database.should_receive(:new).with(@connection).and_return(@database)
-          ConventionalModels.configure
-        end
-        
-        it "called apply_conventions on the database object" do
-          @database.should_receive(:apply_conventions).with(@conventions)
+      describe "with no args" do
+        it "creates a database object with the conventions" do
+          Database.should_receive(:new).with(@conventions).and_return(@database)
           ConventionalModels.configure
         end
       
         it "run the generated code" do
           ConventionalModels.should_receive(:run_code).with(@generated_code)
+          ConventionalModels.configure
+        end
+      end
+      describe "second call" do
+        it "should call remove if a database has already been configured" do
+          ConventionalModels.should_receive(:remove).with(@database)
+          ConventionalModels.configure
           ConventionalModels.configure
         end
       end
@@ -56,6 +57,28 @@ module ConventionalModels
         @database.should_receive(:code_for).with("Test").and_return("test")
         ConventionalModels.configure
         ConventionalModels.model_code_for("Test").should == "test"
+      end
+    end
+    
+    describe ".run_console!" do
+      it "starts an IRB session" do
+        IRB.should_receive(:start)
+        ConventionalModels.should_receive(:configure_active_record)
+        ConventionalModels.should_receive(:configure)
+        ConventionalModels.run_console!
+      end
+    end
+    
+    describe ".remove" do
+      before(:each) do
+        ConventionalModels.unstub(:remove)
+        table = mock(Table, :class_name => "TestTable")
+        @database.should_receive(:tables).and_return([table])
+        Object.should_receive(:send).with(:remove_const, :TestTable)
+      end
+      
+      it "removes the table constants from the environment" do
+        ConventionalModels.remove(@database)
       end
     end
   end  
