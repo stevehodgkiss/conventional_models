@@ -5,6 +5,7 @@ module ConventionalModels
     before(:each) do
       @config = mock(Config)
       @config.stub(:ignored_tables).and_return([])
+      @config.stub(:connection)
       
       @connection = mock(::ActiveRecord::ConnectionAdapters::AbstractAdapter)
       @columns = [mock(Column)]

@@ -17,7 +17,7 @@ module ConventionalModels
     end
     
     def code
-      "class ::#{@name.singularize.camelize} < ::ActiveRecord::Base\n#{@lines.map{|l| "  #{l}"}.join("\n")}\nend"
+      "class ::#{@class_name} < ::ActiveRecord::Base\n#{@lines.map{|l| "  #{l}"}.join("\n")}\nend"
     end
     
     def conventional_name?
@@ -28,7 +28,11 @@ module ConventionalModels
     
       def apply_conventions
         @class_name = @config.class_name.call(@name)
-      
+        
+        unless @config.module_name.nil?
+          @class_name = "#{@config.module_name}::#{@class_name}"
+        end
+        
         @lines << "set_primary_key \"#{@config.primary_key_name}\"" unless @config.primary_key_name == "id"
       
         @lines << "set_table_name \"#{@name}\"" unless @name.tableize == @name

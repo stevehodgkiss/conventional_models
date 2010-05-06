@@ -42,6 +42,20 @@ module ConventionalModels
       end
       config.class_name.call("").should == "test"
     end
+    
+    it "should set connection" do
+      config = Config.new do
+        connection :adapter => 'sqlite3'
+      end
+      config.connection[:adapter].should == 'sqlite3'
+    end
+    
+    it "should set module name" do
+      config = Config.new do
+        module_name "test"
+      end
+      config.module_name.should == "test"
+    end
   
     it "should have default settings" do
       @site_id_column = Column.new("site_id", nil, "integer")

@@ -28,13 +28,6 @@ module ConventionalModels
           ConventionalModels.configure
         end
       end
-      describe "second call" do
-        it "should call remove if a database has already been configured" do
-          ConventionalModels.should_receive(:remove).with(@database)
-          ConventionalModels.configure
-          ConventionalModels.configure
-        end
-      end
     end
     
     describe ".run_code" do
@@ -66,19 +59,6 @@ module ConventionalModels
         ConventionalModels.should_receive(:configure_active_record)
         ConventionalModels.should_receive(:configure)
         ConventionalModels.run_console!
-      end
-    end
-    
-    describe ".remove" do
-      before(:each) do
-        ConventionalModels.unstub(:remove)
-        table = mock(Table, :class_name => "TestTable")
-        @database.should_receive(:tables).and_return([table])
-        Object.should_receive(:send).with(:remove_const, :TestTable)
-      end
-      
-      it "removes the table constants from the environment" do
-        ConventionalModels.remove(@database)
       end
     end
   end  

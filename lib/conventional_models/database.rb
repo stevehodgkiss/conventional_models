@@ -5,7 +5,21 @@ module ConventionalModels
     attr_accessor :tables
     
     def initialize(config)
-      @connection = ::ActiveRecord::Base.connection
+      if config.connection.nil?
+        @connection = ::ActiveRecord::Base.connection
+      else
+        base_class_code = []
+        base_class_code << "module ::#{config.module_name}"
+        base_class_code << "  class Base < ActiveRecord::Base;"
+        base_class_code << "  end;"
+        base_class_code << "end"
+        eval base_class_code.join
+        @base_class = "::#{config.module_name}::Base".constantize
+        @base_class.class_eval do
+          establish_connection config.connection
+        end
+        @connection = @base_class.connection
+      end
       @config = config
       @tables = []
       apply_conventions

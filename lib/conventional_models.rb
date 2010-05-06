@@ -16,11 +16,8 @@ require 'irb/completion'
 module ConventionalModels
   @@database = nil
   
-  def self.configure(&block)
+  def self.configure(config=nil, &block)
     @@config = Config.new(&block)
-    unless @@database.nil?
-      remove(@@database)
-    end
     @@database = Database.new(@@config)
     run_code @@database.code
   end
@@ -47,11 +44,5 @@ module ConventionalModels
     config = YAML::load(IO.read(config))
     ActiveRecord::Base.configurations = config
     ActiveRecord::Base.establish_connection(config[environment])
-  end
-  
-  def self.remove(database)
-    database.tables.map{|t| t.class_name.to_sym}.each do |class_sym|
-      Object.send(:remove_const, class_sym)
-    end
   end
 end
