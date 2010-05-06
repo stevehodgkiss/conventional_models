@@ -3,24 +3,17 @@ require 'bundler'
 Bundler.setup
 require 'rake'
 
-begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gem|
-    gem.name = "conventional_models"
-    gem.description = %Q{Generate ActiveRecord models automatically with basic relationships based on conventions.}
-    gem.summary = %Q{Generate ActiveRecord models. For lazy people.}
-    gem.email = "steve@hodgkiss.me.uk"
-    gem.homepage = "http://github.com/stevehodgkiss/conventional_models"
-    gem.authors = ["Steve Hodgkiss"]
-    gem.add_development_dependency "rspec", ">= 1.3.0"
-    gem.add_development_dependency "cucumber", ">= 0.6.4"
-    gem.add_development_dependency "aruba", ">= 0.1.7"
-    gem.add_dependency "activerecord", ">= 2.3.5"
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
-  end
-  Jeweler::GemcutterTasks.new
-rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
+gemspec = eval(File.read("conventional_models.gemspec"))
+
+task :build => "#{gemspec.full_name}.gem"
+
+file "#{gemspec.full_name}.gem" => gemspec.files + ["conventional_models.gemspec"] do
+  system "gem build conventional_models.gemspec"
+  system "gem install conventional_models-#{ConventionalModels::VERSION::STRING}.gem"
+end
+
+task :release => :build do
+  system "gem push conventional_models-#{ConventionalModels::VERSION::STRING}"
 end
 
 require 'spec/rake/spectask'
@@ -35,13 +28,13 @@ Spec::Rake::SpecTask.new(:rcov) do |spec|
   spec.rcov = true
 end
 
-task :spec => :check_dependencies
+task :spec => gemspec.files
 
 begin
   require 'cucumber/rake/task'
   Cucumber::Rake::Task.new(:features)
 
-  task :features => :check_dependencies
+  task :features => gemspec.files
 rescue LoadError
   task :features do
     abort "Cucumber is not available. In order to run features, you must: sudo gem install cucumber"

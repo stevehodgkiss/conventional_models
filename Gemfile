@@ -1,8 +1,9 @@
 source :gemcutter
 
 group :features do
-  gem "cucumber", "0.6.4"
-  gem "aruba", "0.1.7"
+  gem "cucumber", "0.7.2"
+  gem "aruba"
+  gem "open4"
 end
 
 group :specs do

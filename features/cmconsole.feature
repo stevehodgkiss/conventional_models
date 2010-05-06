@@ -9,7 +9,7 @@ Feature: Cmconsole
       """
       development:
         adapter: sqlite3
-        database: test.sqlite
+        database: development.sqlite
         pool: 5
         timeout: 5000
         
@@ -26,8 +26,8 @@ Feature: Cmconsole
         timeout: 5000
       """
     And a table "pages"
-    When I run "../../bin/cmconsole"
-    Then I should see ">> "
+    When I run "../../bin/cmconsole" as child "irb"
+    Then I should see ">> " from child "irb"
   
   
 
