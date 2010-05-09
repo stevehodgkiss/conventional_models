@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.default_executable = %q{cmconsole}
   
   s.required_rubygems_version = ">= 1.3.6"
+  s.rubyforge_project = "conventional_models"
   
   s.executables = ["cmconsole"]
   s.extra_rdoc_files = [
@@ -22,7 +23,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{lib}/**/*.rb", "bin/*", "LICENSE", "README.rdoc"]
   s.test_files = Dir["spec/**/*.rb", "features/**/*", "Gemfile", "Gemfile.lock"]
   
-  s.require_paths = "lib"
+  s.require_paths = ["lib"]
   
   s.add_development_dependency(%q<rspec>, [">= 1.3.0"])
   s.add_development_dependency(%q<cucumber>, [">= 0.6.4"])
