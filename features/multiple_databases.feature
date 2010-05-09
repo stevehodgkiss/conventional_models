@@ -32,9 +32,12 @@ Feature: Multiple database connection
         module_name "Test"
       end
       puts ConventionalModels.model_code
+      Development::Page.create!
+      Development::Page.create!
+      Test::Page.create!
       puts "Number of development records: #{Development::Page.count}"
       puts "Number of production records: #{Test::Page.count}"
       """
     When I run "ruby my_script.rb"
-    Then I should see "Number of development records: 0"
-    Then I should see "Number of production records: 0"
+    Then I should see "Number of development records: 2"
+    Then I should see "Number of production records: 1"

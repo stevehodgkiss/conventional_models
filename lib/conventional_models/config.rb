@@ -5,7 +5,7 @@ module ConventionalModels
       builder.instance_eval(&block) if block
     end
     
-    attr_accessor :ignored_tables, :primary_key_name, :class_name,
+    attr_accessor :ignored_tables, :primary_key_name, :class_name, :base_class,
                   :belongs_to_matcher, :belongs_to_name, :connection, :module_name
     
     class Builder
@@ -16,6 +16,7 @@ module ConventionalModels
         primary_key_name "id"
         class_name {|table_name| table_name.singularize.camelize}
         ignore_tables "schema_migrations", "sqlite_sequence", "sysdiagrams"
+        base_class "::ActiveRecord::Base"
       end
       
       def ignore_tables(*tables)
@@ -44,6 +45,10 @@ module ConventionalModels
       
       def module_name(name)
         @config.module_name = name
+      end
+      
+      def base_class(name)
+        @config.base_class = name
       end
     end
   end

@@ -17,7 +17,7 @@ module ConventionalModels
     end
     
     def code
-      "class ::#{@class_name} < ::ActiveRecord::Base\n#{@lines.map{|l| "  #{l}"}.join("\n")}\nend"
+      "class ::#{@class_name} < #{@config.base_class}\n#{@lines.map{|l| "  #{l}"}.join("\n")}\nend"
     end
     
     def conventional_name?

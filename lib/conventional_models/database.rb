@@ -11,6 +11,7 @@ module ConventionalModels
         base_class_code = []
         base_class_code << "module ::#{config.module_name}"
         base_class_code << "  class Base < ActiveRecord::Base;"
+        base_class_code << "    @abstract_class = true;"
         base_class_code << "  end;"
         base_class_code << "end"
         eval base_class_code.join
@@ -18,6 +19,7 @@ module ConventionalModels
         @base_class.class_eval do
           establish_connection config.connection
         end
+        config.base_class = @base_class
         @connection = @base_class.connection
       end
       @config = config
