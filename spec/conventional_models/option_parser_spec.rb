@@ -7,7 +7,7 @@ module ConventionalModels
       @option_parser.options
     end
     
-    describe "parsing" do
+    context "parsing" do
       it "accepts a database config file" do
         options_for(["-c", "config/db.yml"]).config.should == "config/db.yml"
         options_for(["--config", "config/db.yml"]).config.should == "config/db.yml"
@@ -34,7 +34,7 @@ module ConventionalModels
       end
     end
     
-    describe "invalid arguments" do
+    context "invalid arguments" do
       it "should set parsed_options? to false" do
         options_for(["--boobs"])
         @option_parser.parsed_options?.should == false

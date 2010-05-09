@@ -2,11 +2,11 @@ require 'spec_helper'
 
 module ConventionalModels
   describe Options do
-    before(:each) do
+    before do
       @options = Options.new
     end
     
-    describe "default options" do
+    context "default options" do
       it "should use rails location for default database.yml" do
         @options.config.should == "config/database.yml"
       end

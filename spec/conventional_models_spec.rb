@@ -2,29 +2,25 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 module ConventionalModels
   describe ConventionalModels do
-    before(:each) do
-      @config = mock(Config)
-      Config.stub(:new => @config)
-      
+    let(:config) { mock(Config) }
+    let(:generated_code) { mock(String) }
+    let(:database) { mock(Database, :code => generated_code, :apply_conventions => nil) }
+    
+    before do
+      Config.stub(:new => config)
+      Database.stub(:new => database)
       ConventionalModels.stub(:run_code)
-      
-      @generated_code = mock(String)
-      @database = mock(Database, :code => @generated_code)
-      @database.stub(:apply_conventions)
-      Database.stub(:new => @database)
-
-      ConventionalModels.stub(:remove)
     end
     
     describe ".configure" do
-      describe "with no args" do
+      context "with no args" do
         it "creates a database object with the conventions" do
-          Database.should_receive(:new).with(@config).and_return(@database)
+          Database.should_receive(:new).with(config).and_return(database)
           ConventionalModels.configure
         end
       
         it "run the generated code" do
-          ConventionalModels.should_receive(:run_code).with(@generated_code)
+          ConventionalModels.should_receive(:run_code).with(generated_code)
           ConventionalModels.configure
         end
       end
@@ -41,13 +37,13 @@ module ConventionalModels
     describe ".model_code" do
       it "returns the database code" do
         ConventionalModels.configure
-        ConventionalModels.model_code.should == @generated_code
+        ConventionalModels.model_code.should == generated_code
       end
     end
     
     describe ".model_code_for" do
       it "returns the model code for a specific model" do
-        @database.should_receive(:code_for).with("Test").and_return("test")
+        database.should_receive(:code_for).with("Test").and_return("test")
         ConventionalModels.configure
         ConventionalModels.model_code_for("Test").should == "test"
       end

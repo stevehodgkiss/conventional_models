@@ -2,11 +2,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 module ConventionalModels
   describe CLI do
+    let(:option_parser) { mock(OptionParser, :options => @options) }
     before(:each) do
       @args = []
       @options = Options.new
-      @option_parser = mock(OptionParser, :options => @options)
-      OptionParser.stub(:new).and_return(@option_parser)
+      OptionParser.stub(:new).and_return(option_parser)
       File.stub(:exists?).with(@options.config).and_return(true)
     end
     
@@ -29,9 +29,9 @@ module ConventionalModels
         @cli.run
       end
       
-      describe "with parsed options" do
+      context "with parsed options" do
         before(:each) do
-          @option_parser.stub(:parsed_options?).and_return(true)
+          option_parser.stub(:parsed_options?).and_return(true)
           ConventionalModels.stub(:configure)
           ConventionalModels.stub(:model_code)
           ConventionalModels.stub(:configure_active_record)
@@ -43,7 +43,7 @@ module ConventionalModels
           run
         end
         
-        describe "when config doesnt exist" do
+        context "when config doesnt exist" do
           before(:each) do
             File.stub(:exists?).with(@options.config).and_return(false)
           end
@@ -75,7 +75,7 @@ module ConventionalModels
           run
         end
         
-        describe "with skip-configure option" do
+        context "with skip-configure option" do
           it "does not call configure" do
             @options.skip_configure = true
             ConventionalModels.should_not_receive(:configure)
@@ -83,7 +83,7 @@ module ConventionalModels
           end
         end
         
-        describe "with help option" do
+        context "with help option" do
           it "outputs help" do
             RDoc.should_receive(:usage)
             @options.output_help = true
@@ -92,7 +92,7 @@ module ConventionalModels
           end
         end
         
-        describe "with output version option" do
+        context "with output version option" do
           it "outputs the version" do
             @options.output_version = true
             ConventionalModels.should_not_receive(:configure_active_record)
@@ -102,10 +102,10 @@ module ConventionalModels
         end
       end
       
-      describe "with invalid options" do
+      context "with invalid options" do
         it "prints usage" do
           RDoc.should_receive(:usage).with('usage')
-          @option_parser.stub(:parsed_options?).and_return(false)
+          option_parser.stub(:parsed_options?).and_return(false)
           run
         end
       end
