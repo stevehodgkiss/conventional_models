@@ -13,6 +13,7 @@ end
 group :development do
   gem "jeweler"
   gem "rake"
+  gem "ZenTest"
 end
 
 gem "activerecord", "2.3.5"
