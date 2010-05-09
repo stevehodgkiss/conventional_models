@@ -11,7 +11,6 @@ Feature: Multiple database connection
       $:.unshift("../../lib")
       require 'rubygems'
       require 'active_record'
-      ActiveRecord::Base.establish_connection(:database => 'development.sqlite', :adapter => 'sqlite3')
       require 'conventional_models'
       config = {
         "development" => {

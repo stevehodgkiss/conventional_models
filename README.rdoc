@@ -76,7 +76,6 @@ You can use this from rake as follows:
   # Confiigure active_record as you would normally
   
   task :console do
-    require 'irb'
     require 'conventional_models'
     ConventionalModels.configure do
       primary_key_name "Id"
@@ -91,9 +90,45 @@ You can use this from rake as follows:
 I use this for data migrations or quick scripting tasks on databases that don't follow rails 
 conventions.
 
-== TODO
+== Multiple databases
 
+Given a table called pages in both development.sqlite and test.sqlite:
 
+  require 'rubygems'
+  require 'active_record'
+  require 'conventional_models'
+  config = {
+    "development" => {
+      "database" => 'development.sqlite',
+      "adapter" => 'sqlite3'
+    },
+    "test" => {
+      "database" => 'test.sqlite',
+      "adapter" => 'sqlite3'
+    }
+  }
+  ConventionalModels.configure do
+    connection config["development"]
+    module_name "Development"
+  end
+  ConventionalModels.configure do
+    connection config["test"]
+    module_name "Test"
+  end
+  puts ConventionalModels.model_code
+  # => class ::Development::Page < Development::Base
+  # => 
+  # => end
+  # => class ::Test::Page < Test::Base
+  # => 
+  # => end
+  Development::Page.create!
+  Development::Page.create!
+  Test::Page.create!
+  puts "Number of development records: #{Development::Page.count}"
+  # => 2
+  puts "Number of production records: #{Test::Page.count}"
+  # => 1
 
 == Note on Patches/Pull Requests
  

@@ -10,16 +10,19 @@ require 'conventional_models/active_record_base_model_for'
 require 'conventional_models/options'
 require 'conventional_models/option_parser'
 require 'conventional_models/cli'
-require 'irb';
+require 'irb'
 require 'irb/completion'
 
 module ConventionalModels
   @@database = nil
+  @@model_code = []
   
   def self.configure(config=nil, &block)
     @@config = Config.new(&block)
     @@database = Database.new(@@config)
-    run_code @@database.code
+    code = @@database.code
+    run_code code 
+    @@model_code << code
   end
   
   def self.run_code(code)
@@ -27,7 +30,7 @@ module ConventionalModels
   end
   
   def self.model_code
-    @@database.code
+    @@model_code.join("\n")
   end
   
   def self.model_code_for(table)
