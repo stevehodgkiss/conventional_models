@@ -13,7 +13,7 @@ file "#{gemspec.full_name}.gem" => gemspec.files + ["conventional_models.gemspec
 end
 
 task :release => :build do
-  system "gem push conventional_models-#{ConventionalModels::VERSION::STRING}"
+  system "gem push conventional_models-#{ConventionalModels::VERSION::STRING}.gem"
 end
 
 require 'spec/rake/spectask'
