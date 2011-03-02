@@ -15,7 +15,6 @@ We have a table called Page and another called ContentItems (not following Activ
   require 'active_record'
   ActiveRecord::Base.establish_connection(:database => 'db.sqlite', :adapter => 'sqlite3')
   
-  # set your conventions
   require 'conventional_models'
   ConventionalModels.configure do
     primary_key_name "Id"
@@ -84,12 +83,6 @@ You can use this from rake as follows:
     IRB.start
   end
   
-
-== Why?
-
-I use this for data migrations or quick scripting tasks on databases that don't follow rails 
-conventions.
-
 == Multiple databases
 
 Given a table called pages in both development.sqlite and test.sqlite:
@@ -142,4 +135,4 @@ Given a table called pages in both development.sqlite and test.sqlite:
 
 == Copyright
 
-Copyright (c) 2010 Steve Hodgkiss. See LICENSE for details.
+Copyright (c) 2011 Steve Hodgkiss. See LICENSE for details.
