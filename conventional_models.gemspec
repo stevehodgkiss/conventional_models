@@ -25,8 +25,9 @@ Gem::Specification.new do |s|
   
   s.require_paths = ["lib"]
   
-  s.add_development_dependency(%q<rspec>, [">= 1.3.0"])
-  s.add_development_dependency(%q<cucumber>, [">= 0.6.4"])
-  s.add_development_dependency(%q<aruba>, [">= 0.1.7"])
-  s.add_runtime_dependency(%q<activerecord>, [">= 2.3.5"])
+  s.add_development_dependency("rspec", [">= 2.3"])
+  s.add_development_dependency("cucumber", [">= 0.6.4"])
+  s.add_development_dependency("aruba", [">= 0.1.7"])
+  s.add_runtime_dependency("activerecord", [">= 2.3.5"])
+  s.add_runtime_dependency("rdoc")
 end

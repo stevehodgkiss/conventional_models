@@ -1,12 +1,10 @@
 require 'rubygems'
-require 'bundler'
-Bundler.setup(:specs)
+require 'bundler/setup'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'conventional_models'
-require 'spec'
-require 'spec/autorun'
+require 'rspec'
 
-Spec::Runner.configure do |config|
+RSpec.configure do |config|
 end

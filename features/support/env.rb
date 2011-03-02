@@ -1,9 +1,10 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'conventional_models'
 
-require 'spec/expectations'
+require 'rspec'
 
-require 'aruba'
+require 'aruba/cucumber'
+require 'aruba/api'
 require 'active_record'
 
 Before do

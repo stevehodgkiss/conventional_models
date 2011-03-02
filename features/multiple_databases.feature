@@ -38,5 +38,5 @@ Feature: Multiple database connection
       puts "Number of production records: #{Test::Page.count}"
       """
     When I run "ruby my_script.rb"
-    Then I should see "Number of development records: 2"
-    Then I should see "Number of production records: 1"
+    Then the output should contain "Number of development records: 2"
+    Then the output should contain "Number of production records: 1"

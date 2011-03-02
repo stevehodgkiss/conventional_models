@@ -7,7 +7,8 @@ module ConventionalModels
     def initialize(config)
       if config.connection.nil?
         @connection = ::ActiveRecord::Base.connection
-      else
+      end
+      if config.module_name
         base_class_code = []
         base_class_code << "module ::#{config.module_name}"
         base_class_code << "  class Base < ActiveRecord::Base;"
@@ -15,6 +16,7 @@ module ConventionalModels
         base_class_code << "  end;"
         base_class_code << "end"
         eval base_class_code.join
+        
         @base_class = "::#{config.module_name}::Base".constantize
         @base_class.class_eval do
           establish_connection config.connection

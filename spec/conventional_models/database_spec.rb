@@ -3,14 +3,14 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 module ConventionalModels
   describe Database do
     let(:table) { mock(Table, :apply_conventions => nil, :belongs_to_names => [], :name => "Test") }
-    let(:config) { mock(Config, :ignored_tables => [], :connection => nil) }
+    let(:config) { mock(Config, :ignored_tables => [], :connection => nil, :module_name => nil) }
     let(:connection) do
       mock(::ActiveRecord::ConnectionAdapters::AbstractAdapter, :tables => ["Test"], :columns => columns)
     end
     let(:columns) { [mock(Column)] }
     
     before do
-      ::ActiveRecord::Base.stub(:connection).and_return(connection)
+      ::ActiveRecord::Base.stub(:connection => connection)
       Table.stub(:new => table)
     end
     

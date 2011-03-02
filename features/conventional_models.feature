@@ -16,7 +16,7 @@ Feature: ConventionalModels
       puts "Number of records: #{<model_name>.count}"
       """
     When I run "ruby my_script.rb"
-    Then I should see "Number of records: 0"
+    Then the output should contain "Number of records: 0"
     
     Examples:
       | table_name    | model_name  |
@@ -36,7 +36,7 @@ Feature: ConventionalModels
       puts "Number of records: #{<model_name>.count}"
       """
     When I run "ruby my_script.rb"
-    Then I should see "Number of records: 0"
+    Then the output should contain "Number of records: 0"
 
     Examples:
       | table_name    | model_name  |
@@ -68,6 +68,6 @@ Feature: ConventionalModels
       puts "My page's content item name: #{page.content_items.first.Name}"
       """
     When I run "ruby my_script.rb"
-    Then I should see "My page's content item name: content1"
+    Then the output should contain "My page's content item name: content1"
   
   

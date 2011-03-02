@@ -3,13 +3,14 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 module ConventionalModels
   describe ConventionalModels do
     let(:config) { mock(Config) }
-    let(:generated_code) { mock(String) }
+    let(:generated_code) { "class TestCode; end" }
     let(:database) { mock(Database, :code => generated_code, :apply_conventions => nil) }
     
     before do
       Config.stub(:new => config)
       Database.stub(:new => database)
       ConventionalModels.stub(:run_code)
+      ConventionalModels.class_eval { @@model_code = [] }
     end
     
     describe ".configure" do

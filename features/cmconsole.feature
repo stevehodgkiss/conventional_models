@@ -1,4 +1,3 @@
-@wip
 Feature: Cmconsole
   In order to play with models generated against other projects with ease
   As a user
@@ -26,9 +25,9 @@ Feature: Cmconsole
         timeout: 5000
       """
     And a table "pages"
-    When I run "../../bin/cmconsole" as child "irb"
-    Then I should see ">> " from child "irb"
-  
-  
-
-  
+    When I run "../../bin/cmconsole" interactively
+    And I type "Page.count"
+    And I type "Page.superclass"
+    And I type "exit"
+    Then the output should contain "0"
+    And the output should contain "ActiveRecord::Base"
