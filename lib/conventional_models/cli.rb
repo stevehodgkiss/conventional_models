@@ -1,5 +1,4 @@
 require 'optparse'
-require 'rdoc/usage'
 require 'ostruct'
 require 'date'
 
@@ -7,20 +6,24 @@ module ConventionalModels
   class CLI
     attr_reader :options
 
-    def initialize(arguments)
-      @arguments = arguments
-      @option_parser = OptionParser.new(arguments)
-      @options = @option_parser.options
-    end
-    
-    def run
-      if @option_parser.parsed_options?
-        return output_help if @options.output_help
+    def run(args)
+      opts = OptionParser.new
+      @options = Options.new
+      opts.on('-v', '--version')    { @options.output_version = true }
+      opts.on('-h', '--help')       { @options.output_help = opts }
+      opts.on('-s', '--skip-configure')    { @options.skip_configure = true }  
+      opts.on('-c', '--config FILE')      { |file| @options.config = file }
+      opts.on('-e', '--environment ENV')      { |env| @options.environment = env }
+      opts.on('-V', '--verbose')      { |env| @options.verbose = true }
+      
+      begin
+        opts.parse!(args)
         return output_version if @options.output_version
+        return output_help(@options.output_help) if @options.output_help
         output_options if @options.verbose
         run_console
-      else
-        output_usage
+      rescue
+        puts opts
       end
     end
     
@@ -44,18 +47,13 @@ module ConventionalModels
           puts "  #{name} = #{val}"
         end
       end
-    
-      def output_help
-        output_version
-        RDoc::usage()
-      end
-    
-      def output_usage
-        RDoc::usage('usage')
-      end
-    
+
       def output_version
         puts "ConventionalModels version #{ConventionalModels::VERSION::STRING}"
+      end
+      
+      def output_help(options)
+        puts options
       end
   end
 end
