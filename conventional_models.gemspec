@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path("../lib/conventional_models/version", __FILE__)
+$:.push File.expand_path("../lib", __FILE__)
+require "conventional_models/version"
 
 Gem::Specification.new do |s|
   s.name = %q{conventional_models}
@@ -12,16 +13,11 @@ Gem::Specification.new do |s|
   s.description = %q{Generate ActiveRecord models automatically with basic relationships based on conventions.}
   s.default_executable = %q{cmconsole}
   
-  s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project = "conventional_models"
   
-  s.executables = ["cmconsole"]
-  s.extra_rdoc_files = [
-    "LICENSE",
-     "README.rdoc"
-  ]
-  s.files = Dir["{lib}/**/*.rb", "bin/*", "LICENSE", "README.rdoc"]
-  s.test_files = Dir["spec/**/*.rb", "features/**/*", "Gemfile", "Gemfile.lock"]
+  s.files         = `git ls-files`.split("\n")
+  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   
   s.require_paths = ["lib"]
   
